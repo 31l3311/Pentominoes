@@ -1,0 +1,90 @@
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class GUI extends JFrame {
+
+    private static JRadioButton parcel = new JRadioButton("Parcels");
+    private static JRadioButton pentomino = new JRadioButton("Pentomino");
+    private static JComboBox<String> combo = new JComboBox<>();
+    private static JButton run = new JButton("Run");
+    private static JLabel test = new JLabel();
+
+    public GUI() {
+        //BOX TYPE
+        ButtonGroup radioButtons = new ButtonGroup();
+        radioButtons.add(parcel);
+        radioButtons.add(pentomino);
+
+        // Algorithms !IS NOW DONE WITH STRINGS, FINAL VERSION PROB HAS OBJECTS!
+        combo.addItem("Greedy simple");
+        combo.addItem("Greedy W/V");
+        combo.addItem("Greedy D&C");
+    }
+
+    private void radioButtonAction() {
+        if (parcel.isSelected()) {
+            //run Algorithm with Parcels
+        } else if (pentomino.isSelected()) {
+            //run Algorithm with Pentominoes
+        }
+    }
+
+    private void comboBoxAction() {
+        String select = combo.getSelectedItem().toString();
+        if (select.equalsIgnoreCase("Greedy simple")) {
+            //run greedy simple algorithm
+        } else if (select.equalsIgnoreCase("Greedy W/V")) {
+            //run greedy weight/value ratio algorithm
+        }
+    }
+
+    private void ButtonAction() {
+        run.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //run Algorithm
+
+            }
+        });
+    }
+
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("3D Knapsack");
+
+        JPanel boxType = new JPanel();
+        boxType.setLayout(new BorderLayout());
+        boxType.add(new JLabel("Box Type:"), BorderLayout.PAGE_START);
+        boxType.add(parcel, BorderLayout.CENTER);
+        boxType.add(pentomino, BorderLayout.SOUTH);
+        boxType.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
+
+        JPanel algorithmType = new JPanel();
+        algorithmType.setLayout(new BorderLayout());
+        algorithmType.add(new JLabel("Algorithm Type:"), BorderLayout.PAGE_START);
+        algorithmType.add(combo, BorderLayout.CENTER);
+
+        JPanel settings = new JPanel();
+        settings.add(boxType);
+        settings.add(algorithmType);
+        settings.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        settings.setPreferredSize(new Dimension(400, 80));
+
+        JPanel main = new JPanel();
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+        main.add(settings);
+        main.add(run);
+
+
+        frame.add(main);
+
+        frame.getContentPane().setSize(500,1000);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
+
+    }
