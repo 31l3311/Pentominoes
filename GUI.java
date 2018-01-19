@@ -1,0 +1,164 @@
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.text.NumberFormatter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.util.Arrays;
+
+/*
+* Known Bug:
+* RadioButtonPanel (@code= boxType)doesn't show up
+* */
+
+public class GUI extends JFrame {
+
+    private JRadioButton parcel = new JRadioButton("Parcels");
+    private JRadioButton pentomino = new JRadioButton("Pentomino");
+    private JComboBox<String> combo = new JComboBox<>();
+    private JButton run = new JButton("Run");
+    private JFormattedTextField a, b, c;
+    private JPanel inputFields = new JPanel();
+    private JPanel algorithmType = new JPanel();
+    private JPanel boxType = new JPanel();
+    private JPanel main = new JPanel();
+
+    public GUI() {
+        initUI();
+    }
+
+    private void initUI() {
+        boxTypeHandler();
+        inputFieldHandler();
+        algorithmHandler();
+        panelMerger();
+        buttonPressAction();
+
+        setTitle("3D Knapsack Problem");
+        add(main);
+        getContentPane().setSize(500,1000);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    //draws radioButtonPanel  !Bug possibly here!
+    private void boxTypeHandler() {
+        JPanel boxType = new JPanel();
+        boxType.setLayout(new BorderLayout());
+        boxType.add(new JLabel("Box Type:"), BorderLayout.PAGE_START);
+        ButtonGroup radioButtons = new ButtonGroup();
+        radioButtons.add(parcel);
+        radioButtons.add(pentomino);
+        boxType.add(parcel, BorderLayout.CENTER);
+        boxType.add(pentomino, BorderLayout.SOUTH);
+        boxType.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
+    }
+
+    private void inputFieldHandler() {
+        inputFields.setLayout(new GridLayout(3, 2));
+        //Labels
+        JLabel textfield1 = new JLabel("Parcel 1");
+        JLabel textfield2 = new JLabel("Parcel 2");
+        JLabel textfield3 = new JLabel("Parcel 3");
+;
+        //TextFields
+        a = new JFormattedTextField(formatter());
+        b = new JFormattedTextField(formatter());
+        c = new JFormattedTextField(formatter());
+
+        //set bases value to 0
+        a.setValue(0);
+        b.setValue(0);
+        c.setValue(0);
+
+        //defines textfield width
+        a.setColumns(6);
+        inputFields.add(textfield1);
+        inputFields.add(a);
+        inputFields.add(textfield2);
+        inputFields.add(b);
+        inputFields.add(textfield3);
+        inputFields.add(c);
+        inputFields.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
+    }
+
+    private void algorithmHandler() {
+        algorithmType.setLayout(new BorderLayout());
+        algorithmType.add(new JLabel("Algorithm Type:"), BorderLayout.PAGE_START);
+        combo.addItem("Greedy simple");     // this is backtracking, we don't have simple greedy
+        combo.addItem("Greedy W/V");
+        combo.addItem("Greedy D&C");        // which one is this? --> should maybe be random?
+        algorithmType.add(combo, BorderLayout.CENTER);
+    }
+
+    private void panelMerger() {
+        //Settings Panel Merge
+        JPanel settings = new JPanel();
+        settings.add(boxType);
+        settings.add(inputFields);
+        settings.add(algorithmType);
+        settings.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        settings.setPreferredSize(new Dimension(500, 80));
+
+        //Merges all Panels
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+        main.add(settings);
+        main.add(run);
+    }
+
+    private void radioButtonAction() {
+        if (parcel.isSelected()) {
+            //run Algorithm with Parcels
+        } else if (pentomino.isSelected()) {
+            //run Algorithm with Pentominoes
+        }
+    }
+
+    private void comboBoxAction() {
+        String select = combo.getSelectedItem().toString();
+        if (select.equalsIgnoreCase("Greedy simple")) {
+            //run greedy simple algorithm
+        } else if (select.equalsIgnoreCase("Greedy W/V")) {
+            //run greedy weight/value ratio algorithm
+        }
+    }
+
+    private NumberFormatter formatter () {
+        NumberFormat format = NumberFormat.getInstance();
+        NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(0);
+        formatter.setMaximum(Integer.MAX_VALUE);
+        formatter.setAllowsInvalid(false);
+        return formatter;
+    }
+
+    private void buttonPressAction() {
+        run.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //run Algorithm
+
+                // what is the 1 for, behind the type of box? --> it should be: ("type", value, amount)
+                // can't you use the main from the greedy class though? because this prints something different
+
+                Box[] boxes = {new Box("A", 1, (Integer)a.getValue()), new Box("B", 1, (Integer)b.getValue()), new Box("C", 1, (Integer)c.getValue())};
+                Truck truck = new Truck(33, 8, 5);
+                Greedy algorithm = new Greedy(boxes, truck);
+                for(Box b: boxes){
+                    System.out.println(b.density);
+                }
+                algorithm.solve();
+                System.out.println(Arrays.deepToString(truck.space));
+                System.out.println(truck.totalValue);
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        GUI gui = new GUI();
+        gui.pack();
+        gui.setVisible(true);
+    }
+
+}
