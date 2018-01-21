@@ -30,14 +30,10 @@ public class Truck
           if((x <= this.width - 1) && (y <= this.height - 1) && (z <= this.depth - 1))
           {
             if(this.space[x][y][z] != 0) 
-            { 
               return false; 
-            }
           } 
           else
-          { 
-            return false; 
-          }
+            return false;
         }
     return true;
   }
@@ -50,7 +46,7 @@ public class Truck
         {
           this.space[x][y][z] = box.value;
         }
-    this.totalValue += box.value;
-    box.amountOfBoxes--;
+  this.totalValue += box.value;
+  box.amountOfBoxes--;
   }
 }
