@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class RandomP{
 
   	private static int[][][] truckspace = new int[5][8][33];
+  	private static int totalValue = 0;
   	private static int[][][][] piece =
 	 {{{{1,1},{1,1},{1,0}}}, //P
 	 {{{1,0},{1,0},{1,1}}},
@@ -92,15 +93,11 @@ public class RandomP{
   	public RandomP(int[][][][] piece)
   	{
     	this.piece = piece;
-    	//this.truck = truck;
   	}
 
 
-  	public static boolean putPiece(int type, int d, int h, int w)
+  	public static boolean checkFitOfP(int type, int d, int h, int w)
 	{
-			//put piece is divided to two parts. the first part check if it's possible to place it on board. if not, return false.
-			// the second part put the piece on board
-			//*type = 0-60
 	    for (int i = 0; i < piece[type].length ; i ++)
 	    {
 			for (int j = 0; j < piece[type][0].length ; j ++)
@@ -116,13 +113,23 @@ public class RandomP{
 		return true;
 	}
   
-	public static void placePen(int type, int d, int h, int w)
+	public static void putP(int type, int d, int h, int w)
 	{
 		for (int i = 0; i < piece[type].length ; i ++)
 			for (int j = 0; j < piece[type][0].length ; j ++)
 				for (int k = 0; k < piece[type][0][0].length ; k ++)
 					if(piece[type][i][j][k]!=0)
+					{
 						truckspace[d+i][h+j][w+k] = piece[type][i][j][k];
+
+						// responsible for adding value of each Pentomino to the totalValue 
+						if(piece[type][0][0][0]== 1 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==1)
+     						totalValue = totalValue + 3;
+    					else if(piece[type][0][0][0]== 2 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==2)
+     						totalValue = totalValue + 4;
+						else //(piece[0][0][0]== 3 || piece[piece[type].length-1][piece[0].length-1][piece[0][0].length-1]==3)
+     						totalValue = totalValue + 5;
+					}
 	}
 
 
@@ -132,12 +139,8 @@ public class RandomP{
 	      	for(int x = 0; x < truckspace.length; x++)       // is the coordinate still in the truck?
 	        	for(int y = 0; y < truckspace[0].length; y++)
 	          		for(int z = 0; z < truckspace[0][0].length; z++)
-	            //if(checkAmount()== true)               // checking if that box is stil available
-	              //for(int r = 0; r < box.rotations; r++)
-	              //{  // for a rotation
-	                	if(putPiece(i, x, y, z))
-	            			placePen(i, x, y, z);
-	     		 	//}
+	                	if(checkFitOfP(i, x, y, z))
+	            			putP(i, x, y, z);
 	}
 
 	public static void main(String[] args)
@@ -174,6 +177,6 @@ public class RandomP{
 	    System.out.println();
 	    }
 	    //System.out.println(Arrays.deepToString(truckspace));	//truck.space
-	   //System.out.println("The total value of boxes in the truck is " + truck.totalValue);
+	   System.out.println("The total value of boxes in the truck is " + totalValue);
 	}
 }
