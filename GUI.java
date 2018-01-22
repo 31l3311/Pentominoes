@@ -7,10 +7,11 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
-/*
-* Known Bug:
-* RadioButtonPanel (@code= boxType)doesn't show up
-* */
+/**
+ * User Interface of the packing problem program
+ *
+ * @Version 4
+ */
 
 public class GUI extends JFrame {
 
@@ -28,6 +29,9 @@ public class GUI extends JFrame {
         initUI();
     }
 
+    /**
+     * Handles the initialization of the User Interface
+     */
     private void initUI() {
         boxTypeHandler();
         inputFieldHandler();
@@ -35,15 +39,18 @@ public class GUI extends JFrame {
         panelMerger();
         buttonPressAction();
 
+        //Setting up the JFrame
         setTitle("3D Knapsack Problem");
         add(main);
         getContentPane().setSize(500,1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    //draws radioButtonPanel  !Bug possibly here!
+    /**
+     * First panel of settings panel:
+     * Type of parcel that will be used will be decided here by radio buttons (Either box or Pentomino)
+     */
     private void boxTypeHandler() {
-        JPanel boxType = new JPanel();
         boxType.setLayout(new BorderLayout());
         boxType.add(new JLabel("Box Type:"), BorderLayout.PAGE_START);
         ButtonGroup radioButtons = new ButtonGroup();
@@ -54,6 +61,10 @@ public class GUI extends JFrame {
         boxType.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
     }
 
+    /**
+     * Second panel of settings panel
+     * Amount of parcels used will be chosen here
+     */
     private void inputFieldHandler() {
         inputFields.setLayout(new GridLayout(3, 2));
         //Labels
@@ -61,7 +72,7 @@ public class GUI extends JFrame {
         JLabel textfield2 = new JLabel("Parcel 2");
         JLabel textfield3 = new JLabel("Parcel 3");
 ;
-        //TextFields
+        //TextFields that only accept Integers
         a = new JFormattedTextField(formatter());
         b = new JFormattedTextField(formatter());
         c = new JFormattedTextField(formatter());
@@ -82,14 +93,23 @@ public class GUI extends JFrame {
         inputFields.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
     }
 
+    /**
+     * Final panel of settings panel:
+     * Type of algorithm will be chosen here through a combo box
+     */
+
     private void algorithmHandler() {
         algorithmType.setLayout(new BorderLayout());
         algorithmType.add(new JLabel("Algorithm Type:"), BorderLayout.PAGE_START);
-        combo.addItem("Greedy simple");     // this is backtracking, we don't have simple greedy
-        combo.addItem("Greedy W/V");
-        combo.addItem("Greedy D&C");        // which one is this? --> should maybe be random?
+        combo.addItem("Greedy");
+        combo.addItem("Random");
+        combo.addItem("BruteForce");
         algorithmType.add(combo, BorderLayout.CENTER);
     }
+
+    /**
+     * Merges all the panels into one panel, so the final pannel can be added to the JFrame
+     */
 
     private void panelMerger() {
         //Settings Panel Merge
@@ -106,23 +126,11 @@ public class GUI extends JFrame {
         main.add(run);
     }
 
-    private void radioButtonAction() {
-        if (parcel.isSelected()) {
-            //run Algorithm with Parcels
-        } else if (pentomino.isSelected()) {
-            //run Algorithm with Pentominoes
-        }
-    }
 
-    private void comboBoxAction() {
-        String select = combo.getSelectedItem().toString();
-        if (select.equalsIgnoreCase("Greedy simple")) {
-            //run greedy simple algorithm
-        } else if (select.equalsIgnoreCase("Greedy W/V")) {
-            //run greedy weight/value ratio algorithm
-        }
-    }
-
+    /**
+     * Creates the "only Integers are accepted" handler used by the formatted Text fields in the inputfields panel
+     * @return formatter that only accepts Integers
+     */
     private NumberFormatter formatter () {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new NumberFormatter(format);
@@ -133,24 +141,43 @@ public class GUI extends JFrame {
         return formatter;
     }
 
+    /**
+     * Run program when button is pressed
+     */
     private void buttonPressAction() {
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //run Algorithm
-
-                // what is the 1 for, behind the type of box? --> it should be: ("type", value, amount)
-                // can't you use the main from the greedy class though? because this prints something different
-
-                Box[] boxes = {new Box("A", 1, (Integer)a.getValue()), new Box("B", 1, (Integer)b.getValue()), new Box("C", 1, (Integer)c.getValue())};
-                Truck truck = new Truck(33, 8, 5);
-                Greedy algorithm = new Greedy(boxes, truck);
-                for(Box b: boxes){
-                    System.out.println(b.density);
+                Run run = new Run();
+                String select = combo.getSelectedItem().toString();
+                run.setBoxAmounts((Integer)a.getValue(), (Integer)b.getValue(), (Integer)c.getValue());
+                if (parcel.isSelected()) {
+                    if (select.equalsIgnoreCase("Greedy")) {
+                        //run greedy
+                        run.greedyB();
+                        //System.out.print(run.amountOfA + "  " + run.amountOfB + "  " + run.amountOfC + "  ");
+                    } else if (select.equalsIgnoreCase("Random")) {
+                        //run Random
+                        run.randombB();
+                        //System.out.print(run.amountOfA + "  " + run.amountOfB + "  " + run.amountOfC + "  ");
+                    } else if (select.equalsIgnoreCase("BruteForce")) {
+                        //run BruteForce
+                        //System.out.print(run.amountOfA + "  " + run.amountOfB + "  " + run.amountOfC + "  ");
+                    }
+                } else if (pentomino.isSelected()) {
+                    if (select.equalsIgnoreCase("Greedy")) {
+                        //run greedy
+                        run.greedyP();
+                    } else if (select.equalsIgnoreCase("Random")) {
+                        //run Random
+                        run.randomP();
+                    } else if (select.equalsIgnoreCase("BruteForce")) {
+                        //run BruteForce
+                        System.out.println("c");
+                        System.out.println(select);
+                    }
                 }
-                algorithm.solve();
-                System.out.println(Arrays.deepToString(truck.space));
-                System.out.println(truck.totalValue);
             }
         });
     }
