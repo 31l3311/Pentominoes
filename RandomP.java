@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 public class RandomP{
 
-  	private static int[][][] truckspace = new int[5][8][33];
+  	private static int[][][] truckspace = new int[3][3][3];
   	private static int totalValue = 0;
-  	private static int[][][][] piece =
+private static int[][][][] piece =
 	 {{{{1,1},{1,1},{1,0}}}, //P
 	 {{{1,0},{1,0},{1,1}}},
 	 {{{1,1},{1,1},{0,1}}},
@@ -90,7 +90,7 @@ public class RandomP{
  };
 
 
-  	public RandomP(int[][][][] piece)
+public RandomP(int[][][][] piece)
   	{
     	this.piece = piece;
   	}
@@ -112,9 +112,15 @@ public class RandomP{
 		}
 		return true;
 	}
-  
+
 	public static void putP(int type, int d, int h, int w)
 	{
+		if(piece[type][0][0][0]== 1 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==1)
+      		totalValue = totalValue + 1;
+    	else if(piece[type][0][0][0]== 2 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==2)
+      		totalValue = totalValue + 1;
+ 		else //(piece[0][0][0]== 3 || piece[piece[type].length-1][piece[0].length-1][piece[0][0].length-1]==3)
+      		totalValue = totalValue + 1;
 		for (int i = 0; i < piece[type].length ; i ++)
 			for (int j = 0; j < piece[type][0].length ; j ++)
 				for (int k = 0; k < piece[type][0][0].length ; k ++)
@@ -122,13 +128,6 @@ public class RandomP{
 					{
 						truckspace[d+i][h+j][w+k] = piece[type][i][j][k];
 
-						// responsible for adding value of each Pentomino to the totalValue 
-						if(piece[type][0][0][0]== 1 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==1)
-     						totalValue = totalValue + 3;
-    					else if(piece[type][0][0][0]== 2 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==2)
-     						totalValue = totalValue + 4;
-						else //(piece[0][0][0]== 3 || piece[piece[type].length-1][piece[0].length-1][piece[0][0].length-1]==3)
-     						totalValue = totalValue + 5;
 					}
 	}
 
@@ -149,7 +148,7 @@ public class RandomP{
 	    for (int i = 0; i < piece.length; i++)
 	    {
 	      int s = (int)(Math.random()* (piece.length -i));
-	  
+
 	      int[][][] temp = piece[s];
 	      piece[s] = piece[i];
 	      piece[i] = temp;
@@ -177,6 +176,6 @@ public class RandomP{
 	    System.out.println();
 	    }
 	    //System.out.println(Arrays.deepToString(truckspace));	//truck.space
-	   System.out.println("The total value of boxes in the truck is " + totalValue);
+	   System.out.println("The total value of pentominoes in the truck is " + totalValue);
 	}
 }
