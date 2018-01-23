@@ -1,10 +1,4 @@
-/**
-* This is the Box class for the knapsack problem
-*
-* @version 2
-*/
-
-public class Box
+public class Boxes
 {
   public String type;
   public int value;
@@ -30,7 +24,7 @@ public class Box
   public double density;
   public int rotations;
 
-  public Box(String type, int value, int amountOfBoxes)
+  public Boxes(String type, int value, int amountOfBoxes)
   {
     this.type = type;
     this.value = value;
