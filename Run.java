@@ -1,10 +1,13 @@
 public class Run {
 
-    private final Truck TRUCK = new Truck(33, 8, 5);
-    public int amountOfA;
-    public int amountOfB;
-    public int amountOfC;
-    public Box[] boxes = {new Box("A", 3, amountOfA), new Box("B", 4, amountOfB), new Box("C", 5, amountOfC)};
+    /**
+     * Main methods of all the algorithm classes packed in a single class so it can be easily called from the GUI
+     */
+
+    private Truck TRUCK = new Truck(33, 8, 5);
+    private int amountOfA;
+    private int amountOfB;
+    private int amountOfC;
 
     private static final int[][][] TRUCKSPACE = new int[5][8][33];
     private static int[][][][] piece =
@@ -98,12 +101,12 @@ public class Run {
         //Truck TRUCK = new Truck(5, 8, 33);
         //Truck TRUCK = new Truck(5, 33, 8);
 
+        Boxes[] boxes = {new Boxes("A", 3, amountOfA), new Boxes("B", 4, amountOfB), new Boxes("C", 5, amountOfC)};
         GreedyB algorithm = new GreedyB(boxes, TRUCK);
-
         System.out.println();
-        for(Box b: boxes)
+        for(Boxes b: boxes)
         {
-            System.out.println("Density of box " + b.type +": " + b.density);
+            System.out.println("Density of box " + b.type +": " + b.density + "\n" + b.amountOfBoxes);
         }
         System.out.println();
         algorithm.solve();
@@ -156,13 +159,14 @@ public class Run {
         System.out.println("T: " + GreedyP.getCounterOfT() + ", L: " + GreedyP.getCounterOfL() + ", P: " + GreedyP.getCounterOfP());
     }
 
-    public void randombB() {
+    public void randomB() {
        // shuffles the array
+        Boxes[] boxes = {new Boxes("A", 3, amountOfA), new Boxes("B", 4, amountOfB), new Boxes("C", 5, amountOfC)};
         for (int i = 0; i < boxes.length; i++)
         {
             int s = (int)(Math.random()* (boxes.length -i));
 
-            Box temp = boxes[s];
+            Boxes temp = boxes[s];
             boxes[s] = boxes[i];
             boxes[i] = temp;
         }
@@ -170,7 +174,7 @@ public class Run {
         RandomB algorithm = new RandomB(boxes, TRUCK);
 
         System.out.println();
-        for(Box b: boxes)
+        for(Boxes b: boxes)
         {
             System.out.println("Density of box " + b.type +": " + b.density);
         }
@@ -200,9 +204,7 @@ public class Run {
     }
 
     public void randomP() {
-        /**
-         * Lol where do I specify how many of each amount of pentominoes there are availabl????
-         */
+        Boxes[] boxes = {new Boxes("A", 3, amountOfA), new Boxes("B", 4, amountOfB), new Boxes("C", 5, amountOfC)};
         for (int i = 0; i < piece.length; i++)
         {
             int s = (int)(Math.random()* (piece.length -i));
@@ -213,7 +215,6 @@ public class Run {
         }
 
         RandomP algorithm = new RandomP(piece);
-
 
         algorithm.solve();
 
@@ -234,8 +235,7 @@ public class Run {
             }
             System.out.println();
         }
-        //System.out.println(Arrays.deepToString(TRUCKSPACE));	//TRUCK.space
-        System.out.println("The total value of boxes in the TRUCK is " + TRUCK.totalValue);
+        //System.out.println(Arrays.deepToString(truckspace));	//truck.space
+        System.out.println("The total value of pentominoes in the truck is " + TRUCK.totalValue);
     }
-
 }
