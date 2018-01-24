@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 public class RandomP{
 
-  	private static int[][][] truckspace = new int[3][3][3];
+  	private static int[][][] truckspace = new int[33][5][8];
   	private static int totalValue = 0;
-private static int[][][][] piece =
+	private static int[][][][] piece =
 	 {{{{1,1},{1,1},{1,0}}}, //P
 	 {{{1,0},{1,0},{1,1}}},
 	 {{{1,1},{1,1},{0,1}}},
@@ -89,13 +89,22 @@ private static int[][][][] piece =
 	 {{{0,0,3}},{{3,3,3}},{{0,0,3}}}
  };
 
-
-public RandomP(int[][][][] piece)
+	/**
+    *constructor of the class
+    *
+    *@param piece: 4D array with all the pentominoes in every orientation
+    */
+	public RandomP(int[][][][] piece)
   	{
     	this.piece = piece;
   	}
 
-
+ 	/**
+    *checks if the pentomino fits in the empty space
+    *
+    *@param type: type of pentomino used
+    *@param d, h, w: dimensions of the pentomino
+    */
   	public static boolean checkFitOfP(int type, int d, int h, int w)
 	{
 	    for (int i = 0; i < piece[type].length ; i ++)
@@ -113,14 +122,20 @@ public RandomP(int[][][][] piece)
 		return true;
 	}
 
+  	/**
+    *places the pentomino in the empty space
+    *
+    *@param type: type of pentomino used
+    *@param d, h, w: dimensions of the pentomino
+    */
 	public static void putP(int type, int d, int h, int w)
 	{
 		if(piece[type][0][0][0]== 1 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==1)
-      		totalValue = totalValue + 1;
+      		totalValue = totalValue + 3;
     	else if(piece[type][0][0][0]== 2 || piece[type][piece[type].length-1][piece[type][0].length-1][piece[type][0][0].length-1]==2)
-      		totalValue = totalValue + 1;
+      		totalValue = totalValue + 4;
  		else //(piece[0][0][0]== 3 || piece[piece[type].length-1][piece[0].length-1][piece[0][0].length-1]==3)
-      		totalValue = totalValue + 1;
+      		totalValue = totalValue + 5;
 		for (int i = 0; i < piece[type].length ; i ++)
 			for (int j = 0; j < piece[type][0].length ; j ++)
 				for (int k = 0; k < piece[type][0][0].length ; k ++)
@@ -131,11 +146,14 @@ public RandomP(int[][][][] piece)
 					}
 	}
 
-
+  	/**
+    *the method which decides if the pentomino in this orientation will be put into the truck
+    *
+    */
   	public static void solve()
   	{
   		for(int i=0; i<piece.length; i++)
-	      	for(int x = 0; x < truckspace.length; x++)       // is the coordinate still in the truck?
+	      	for(int x = 0; x < truckspace.length; x++)       
 	        	for(int y = 0; y < truckspace[0].length; y++)
 	          		for(int z = 0; z < truckspace[0][0].length; z++)
 	                	if(checkFitOfP(i, x, y, z))
@@ -158,6 +176,10 @@ public RandomP(int[][][][] piece)
 
 	    algorithm.solve();
 
+	/**
+    * prints out the truck in 'slices' to visualize the cargo- space better
+    *
+    */
 	    for(int x = 0; x < truckspace.length; x++)
 	    {
 	      	if(x % 2==0)

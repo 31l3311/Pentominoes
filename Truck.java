@@ -12,6 +12,11 @@ public class Truck
   public static int[][][] space;
   public static int totalValue;
 
+  /**
+    *constructor of the class
+    *
+    *@param width, height, depth: depends on the box used
+    */
   public Truck(int width, int height, int depth)
   {
     this.width = width;
@@ -21,6 +26,12 @@ public class Truck
     this.totalValue = 0;
   }
 
+  /**
+    *checks if the box fits in the empty space
+    *
+    *@param box: the box used
+    *@param w, h, d: dimensions of the box
+    */
   public boolean fitIn(Box box, int w, int h, int d)
   {
     for(int x = w; x < w + box.width; x++)
@@ -38,6 +49,12 @@ public class Truck
     return true;
   }
 
+  /**
+    *places the box in the empty space
+    *
+    *@param box: the box used
+    *@param w, h, d: dimensions of the box
+    */
   public void placeBox(Box box, int w, int h, int d)
   {
     for(int x = w; x < w + box.width; x++)

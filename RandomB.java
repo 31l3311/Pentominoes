@@ -13,16 +13,35 @@ public class RandomB
 	public Box[] boxes;
   	public Truck truck;
 
+  	/**
+  	*constructor of the class
+  	*
+  	*@param boxes: the box used
+  	*@param truck: the cargo- space where the boxes go
+  	*/
   	public RandomB(Box[] boxes, Truck truck)
   	{
     	this.boxes = boxes;
     	this.truck = truck;
   	}
 
+	/**
+  	*the method which decides if and in which orientation the boxes are put into the truck
+  	*
+  	*/
   	public void solve()
   	{
   		for(Box box: this.boxes)
   		{
+  			double n = Math.random();
+  			if(n>0 && n<1/4)
+  				box.rotate("x");
+  			else if(n>1/4 && n<2/4)
+  				box.rotate("y");
+  			else if(n>2/4 && n<3/4)
+  				box.rotate("z");
+  			else {}
+  			System.out.println(n);
 	      	for(int x = 0; x < this.truck.width; x++)       // is the coordinate still in the truck?
 	        	for(int y = 0; y < this.truck.height; y++)
 	          		for(int z = 0; z < this.truck.depth; z++)
@@ -31,18 +50,12 @@ public class RandomB
 	                		{
 	                  			this.truck.placeBox(box, x, y, z);
 	                		}
-	                		else
-	                		{
-	                  			box.rotate("x");                    // if not we try next rotation
-	                  			if(r % 4 == 0) box.rotate("y");
-	                  			if(r % 16 == 0) box.rotate("z");
-	                		}	
 		}
 	}
 
 	public static void main(String[] args)
 	{
-	    Box[] boxes = {new Box("A", 3, 100), new Box("B", 4, 100), new Box("C", 5, 100)};
+	    Box[] boxes = {new Box("A", 1, 1000), new Box("B", 1, 1000), new Box("C", 1, 1000)};
 
 	    // shuffles the array
 	    for (int i = 0; i < boxes.length; i++)
@@ -55,9 +68,14 @@ public class RandomB
 	    }
 
 
-	    Truck truck = new Truck(33, 8, 5);
+	    Truck truck = new Truck(33, 5, 8);
 	    RandomB algorithm = new RandomB(boxes, truck);
 
+
+	    /**
+  		* prints out the density and the truck in 'slices' to visualize the cargo- space better
+  		*
+  		*/
 	    System.out.println();
 	    for(Box b: boxes)
 	    {
@@ -85,7 +103,6 @@ public class RandomB
 	    }
 	    //System.out.println(Arrays.deepToString(truck.space));
 	    System.out.println("The total value of boxes in the truck is " + truck.totalValue);
-	 	System.out.println(boxes.length);
 	}
 
 }

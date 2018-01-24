@@ -30,6 +30,14 @@ public class Box
   public double density;
   public int rotations;
 
+
+  /**
+  *constructor of the class
+  *
+  *@param type: type of box
+  *@param value: value of box
+  *@param amountOfBoxes: amount of boxes given 
+  */
   public Box(String type, int value, int amountOfBoxes)
   {
     this.type = type;
@@ -59,6 +67,11 @@ public class Box
     this.rotations = 64;
   }
 
+  /**
+  *rotation method
+  *
+  *@param direction: defines in which direction the box will be rotated
+  */
   public void rotate(String direction)
   {
     if(direction.equals("x"))
