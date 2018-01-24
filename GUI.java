@@ -1,3 +1,5 @@
+import javafx.application.Application;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.NumberFormatter;
@@ -10,12 +12,11 @@ import java.util.Arrays;
 /**
  * User Interface of the packing problem program
  *
- * @Version 4
+ * @Version 5
  */
 
 public class GUI extends JFrame {
-
-    private JRadioButton parcel = new JRadioButton("Parcels");
+    private JRadioButton parcel = new JRadioButton("Boxes");
     private JRadioButton pentomino = new JRadioButton("Pentomino");
     private JComboBox<String> combo = new JComboBox<>();
     private JButton run = new JButton("Run");
@@ -25,6 +26,7 @@ public class GUI extends JFrame {
     private JPanel boxType = new JPanel();
     private JPanel main = new JPanel();
 
+
     public GUI() {
         initUI();
     }
@@ -32,12 +34,11 @@ public class GUI extends JFrame {
     /**
      * Handles the initialization of the User Interface
      */
-    private void initUI() {
+    public void initUI() {
         boxTypeHandler();
         inputFieldHandler();
         algorithmHandler();
         panelMerger();
-        buttonPressAction();
 
         //Setting up the JFrame
         setTitle("3D Knapsack Problem");
@@ -52,7 +53,7 @@ public class GUI extends JFrame {
      */
     private void boxTypeHandler() {
         boxType.setLayout(new BorderLayout());
-        boxType.add(new JLabel("Box Type:"), BorderLayout.PAGE_START);
+        boxType.add(new JLabel("Parcel Type:"), BorderLayout.PAGE_START);
         ButtonGroup radioButtons = new ButtonGroup();
         radioButtons.add(parcel);
         radioButtons.add(pentomino);
@@ -103,7 +104,7 @@ public class GUI extends JFrame {
         algorithmType.add(new JLabel("Algorithm Type:"), BorderLayout.PAGE_START);
         combo.addItem("Greedy");
         combo.addItem("Random");
-        combo.addItem("BruteForce");
+        //combo.addItem("BruteForce");
         algorithmType.add(combo, BorderLayout.CENTER);
     }
 
@@ -144,7 +145,7 @@ public class GUI extends JFrame {
     /**
      * Run program when button is pressed
      */
-    private void buttonPressAction() {
+/*    private void buttonPressAction() {
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,12 +155,13 @@ public class GUI extends JFrame {
                 run.setBoxAmounts((Integer)a.getValue(), (Integer)b.getValue(), (Integer)c.getValue());
                 if (parcel.isSelected()) {
                     if (select.equalsIgnoreCase("Greedy")) {
+
                         //run greedy
                         run.greedyB();
                         //System.out.print(run.amountOfA + "  " + run.amountOfB + "  " + run.amountOfC + "  ");
                     } else if (select.equalsIgnoreCase("Random")) {
                         //run Random
-                        run.randombB();
+                        run.randomB();
                         //System.out.print(run.amountOfA + "  " + run.amountOfB + "  " + run.amountOfC + "  ");
                     } else if (select.equalsIgnoreCase("BruteForce")) {
                         //run BruteForce
@@ -180,10 +182,76 @@ public class GUI extends JFrame {
                 }
             }
         });
+    }*/
+
+    public JRadioButton getParcel() {
+        return parcel;
+    }
+
+    public JRadioButton getPentomino() {
+        return pentomino;
+    }
+
+    public JComboBox<String> getCombo() {
+        return combo;
+    }
+
+    public JButton getRun() {
+        return run;
+    }
+
+    public JFormattedTextField getA() {
+        return a;
+    }
+
+    public JFormattedTextField getB() {
+        return b;
+    }
+
+    public JFormattedTextField getC() {
+        return c;
     }
 
     public static void main(String[] args) {
         GUI gui = new GUI();
+        gui.getRun().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //run Algorithm when button "run" is pressed
+                Run runAlgo = new Run();
+                BoxExample visual1 = new BoxExample();
+                BoxExample2 visual2 = new BoxExample2();
+                String select = gui.getCombo().getSelectedItem().toString();
+                runAlgo.setBoxAmounts((Integer)gui.getA().getValue(), (Integer)gui.getB().getValue(), (Integer)gui.getC().getValue());
+                if (gui.getParcel().isSelected()) {
+                    if (select.equalsIgnoreCase("Greedy")) {
+                        //run greedy
+                        //runAlgo.greedyB();
+                        visual1.setBoxAmounts((Integer)gui.getA().getValue(), (Integer)gui.getB().getValue(), (Integer)gui.getC().getValue());
+                        Application.launch(BoxExample.class, args);
+                    } else if (select.equalsIgnoreCase("Random")) {
+                        //run Random
+                        runAlgo.randomB();
+                        visual2.setBoxAmounts((Integer)gui.getA().getValue(), (Integer)gui.getB().getValue(), (Integer)gui.getC().getValue());
+                        Application.launch(BoxExample2.class, args);
+                        //System.out.print(run.amountOfA + "  " + run.amountOfB + "  " + run.amountOfC + "  ");
+                    } else if (select.equalsIgnoreCase("BruteForce")) {
+                        //run BruteForce
+                        //System.out.print(run.amountOfA + "  " + run.amountOfB + "  " + run.amountOfC + "  ");
+                    }
+                } else if (gui.getPentomino().isSelected()) {
+                    if (select.equalsIgnoreCase("Greedy")) {
+                        //run greedy
+                        runAlgo.greedyP();
+                    } else if (select.equalsIgnoreCase("Random")) {
+                        //run Random
+                        runAlgo.randomP();
+                    } else if (select.equalsIgnoreCase("BruteForce")) {
+                        //run BruteForce
+                    }
+                }
+            }
+        });
         gui.pack();
         gui.setVisible(true);
     }
